@@ -137,9 +137,17 @@ def run_feature_engineering(train_path: str, test_path: str, save: bool = True, 
 
     # Save final processed datasets
     if save:
-        train_df.to_csv("../data/processed/train/train_processed.csv", index=False)
-        test_df.to_csv("../data/processed/test/test_processed.csv", index=False)
-        print("Engineered features saved to ../data/processed/train/ and ../data/processed/test/")
+        import os
+        base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+        train_dir = os.path.join(base_dir, "data", "processed", "train")
+        test_dir = os.path.join(base_dir, "data", "processed", "test")
+        
+        os.makedirs(train_dir, exist_ok=True)
+        os.makedirs(test_dir, exist_ok=True)
+        
+        train_df.to_csv(os.path.join(train_dir, "train_processed.csv"), index=False)
+        test_df.to_csv(os.path.join(test_dir, "test_processed.csv"), index=False)
+        print("Engineered features saved to data/processed/train/ and data/processed/test/")
 
     return train_df, test_df
 
